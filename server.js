@@ -215,10 +215,10 @@ app.get('/orgs/:name/repos/biggest', async (req, res) => {
         const response = await axios.get(url, headers)
     
         //Organizatio not found
-        if(error.status == 404){
+        if(response.status == 404){
             jsonError = {
                 status: 404,
-                code: error.code,
+                code: response.code,
                 description: `Organization '${req.params['name']}' not found.`
             }
             res.status(404).json(jsonError);
@@ -226,12 +226,12 @@ app.get('/orgs/:name/repos/biggest', async (req, res) => {
         }
 
         // Other error
-        if(error.status != 200){
+        if(response.status != 200){
             // We should only get Status 200 and status 404 from HTTP
             // https://docs.github.com/es/rest/orgs/orgs?apiVersion=2022-11-28#get-an-organization--status-codes
             jsonError = {
-                status: error.status,
-                code: error.codes
+                status: response.status,
+                code: response.code
             }
             console.error(error);
             res.status(500).json(jsonError)
